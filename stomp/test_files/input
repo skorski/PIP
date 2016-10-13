@@ -1,0 +1,161 @@
+~Simulation Title Card                                                                                                              
+1,                                                                                                                                  
+IDF PA SS flow model,                                                                                                                              
+Nazmul Hasan,
+INTERA,                                                                                                                               
+Feb 19 2016,                                                                                                                       
+12:07 AM PT,                                                                                                                       
+      1,
+Steady state flow model 
+
+~Solution Control Card                                                                                                              
+Normal,                                                                                                                             
+Water,                                                                                                                              
+      1,
+ 0.00000E+00,yr, 3.00000E+03,yr, 1.00000E-08,yr, 1.00000E+01,yr,1.5,  8,1.0E-06,
+10000,                                                                                                                              
+1,                                                                                                                                  
+Aqueous Relative Permeability,Upwind, 
+
+
+~Grid Card
+Cartesian,
+# number of cells in x-, y-, and z-dimensions (i,j,k indices)
+# Several layers not modeled in main cases; see inactive nodes card and zonation file.
+61,70,86,
+# spacing in x-dimension for i-indices proceeding east from origin easting in meters Washington State Plane South
+573683.53,m,1@152.96,m,1@108,m,1@75,m,1@52,m,1@42.59,m,1@28.98,m,1@22.64,m,1@17.83,m,1@13.37,m,43@10,m,1@13.37,m,1@17.83,m,1@22.64,m,1@28.98,m,1@42.59,m,1@52,m,1@75,m,1@108,m,1@152.96,m,
+# spacing in y-dimension for j-indices proceeding north from origin northing in meters Washington State Plane South
+134375.84,m,1@152.96,m,1@108,m,1@75,m,1@52,m,1@42.59,m,1@28.98,m,1@22.64,m,1@17.83,m,1@14.09,m,52@10,m,1@14.09,m,1@17.83,m,1@22.64,m,1@28.98,m,1@42.59,m,1@52,m,1@75,m,1@108,m,1@152.96,m,
+# spacing in z-dimension for k-indices proceeding upward from origin elevation in meters on NAVD88
+56.5,m,11@4,m,6@2,m,6@1,m,4@0.5,m,4@1,m,1@1.5,m,39@2,m,15@1.667,m,
+
+~Inactive Nodes Card
+zonation file unformatted,idf_pa_3d_geology.zon,
+
+
+~Rock/Soil Zonation Card
+zonation file unformatted,idf_pa_3d_geology.zon,
+#
+#  Zones designated cell by cell in external file looping through i, then j, then k.
+#  List order below establishes zone numbering for external file:
+#
+#  Inactive nodes are 0 by default; elevations within IDF backfill or above land surface are inactive.
+#  Zone  = Basalt; reassigned to inactive in main cases but assigned properties for possible sensitivity cases.
+#  Zone  = Ringold A gravel; reassigned to inactive in main cases but assigned properties for possible sensitivity cases.
+#  Zone  = Ringold Lower Mud; reassigned to inactive in main cases but assigned properties for possible sensitivity cases.
+#  Zone 1 = Ringold E gravel (saturated); 
+#  Zone 2 = Hanford formation in saturated zone (H3 Saturated); water table set by corresponding boundary conditions.
+#  Zone 3 = Ringold E gravel (unsaturated); 
+#  Zone 4 = Hanford formation H3 gravel unit where unsaturated (H3 Vadose).
+#  Zone 5 = Hanford formation H2 sand unit (H2); unsaturated everywhere; undifferentiated.
+#  Zone   = clastic dike in H2; re-assigned to H2 in main cases but may be assigned properties for possible sensitivity cases.
+#
+#Basalt,
+#Ringold A,
+#Ringold LM,
+re_sat,
+h3_sat,
+re_unsat,
+h3_unsat,
+h2,
+#Hanford CD,
+
+~Mechanical Properties Card  
+h3_sat,2650,kg/m^3, 0.1740E+00, 0.1740E+00,Pore Compressibility,1e-7,1/Pa,,,millington and quirk,
+re_sat,2650,kg/m^3, 0.1740E+00, 0.1740E+00,Pore Compressibility,1e-7,1/Pa,,,millington and quirk,                                                                                                       
+h3_unsat,2650,kg/m^3, 0.1740E+00, 0.1740E+00,Pore Compressibility,1e-7,1/Pa,,,millington and quirk,   
+re_unsat,2650,kg/m^3, 0.1740E+00, 0.1740E+00,Pore Compressibility,1e-7,1/Pa,,,millington and quirk,                                                        
+h2,2650,kg/m^3, 0.38400E+00, 0.38400E+00,Pore Compressibility,1e-7,1/Pa,,,millington and quirk,                                      
+ 
+~Hydraulic Properties Card   
+h3_sat, 17000,hc m/d, 17000,hc m/d, 1700,hc m/d,
+re_sat, 5,hc m/d, 5,hc m/d, 0.5,hc m/d,                                                                                                       
+h3_unsat, 7.71E-3,hc cm/s, 7.71E-3,hc cm/s, 7.71E-3,hc cm/s,  
+re_unsat, 7.71E-3,hc cm/s, 7.71E-3,hc cm/s, 7.71E-3,hc cm/s,                                                          
+h2, 6.2E-3,hc cm/s, 6.2E-3,hc cm/s, 6.2E-3,hc cm/s,                                                            
+ 
+~Saturation Function Card       
+h3_sat,Nonhysteretic van Genuchten, 0.8859E-01,1/cm, 1.27100E+00, 2.18391E-02,,
+re_sat,Nonhysteretic van Genuchten, 0.8859E-01,1/cm, 1.27100E+00, 2.18391E-02,,                                                                                                    
+h3_unsat,Nonhysteretic van Genuchten, 0.8859E-01,1/cm, 1.27100E+00, 2.18391E-02,,  
+re_unsat,Nonhysteretic van Genuchten, 0.8859E-01,1/cm, 1.27100E+00, 2.18391E-02,,                                            
+h2,Nonhysteretic van Genuchten, 0.64190E-01,1/cm, 1.69800E+00, 7.55208E-02,,  
+ 
+~x-Aqueous Relative Permeability Card
+h3_sat         , Modified Mualem,, 0.637,
+re_sat         , Modified Mualem,, 0.637,
+h3_unsat         , Modified Mualem,, 0.637,
+re_unsat         , Modified Mualem,, 0.637,
+h2           , Modified Mualem,, -0.683,
+
+~y-Aqueous Relative Permeability Card
+h3_sat         , Modified Mualem,, 0.637,
+re_sat         , Modified Mualem,, 0.637,
+h3_unsat         , Modified Mualem,, 0.637,
+re_unsat         , Modified Mualem,, 0.637,
+h2           , Modified Mualem,, -0.683,
+
+~z-Aqueous Relative Permeability Card
+h3_sat         , Modified Mualem,, -0.225,
+re_sat         , Modified Mualem,, -0.225,
+h3_unsat         , Modified Mualem,, -0.225,
+re_unsat         , Modified Mualem,, -0.225,
+h2           , Modified Mualem,, 0.375,                                                                                                      
+ 
+~Initial Conditions Card                                                                                                            
+Gas Pressure,Aqueous pressure,                                                                                                      
+5,                                                                                                                                  
+Gas Pressure,101325.0,Pa,0.0,1/m,0.0,1/m,0.0,1/m,1,61,1,70,1,86,                                                                    
+#Aqueous saturation,1,,0.0,1/m,0.0,1/m,0.0,1/m,1,61,1,70,20,25,
+#Aqueous saturation,0.10,,0.0,1/m,0.0,1/m,0.0,1/m,1,61,1,70,26,86, 
+Aqueous Pressure Zonation,2.2977E+04,Pa,h3_unsat,
+Aqueous Pressure Zonation,2.2977E+04,Pa,re_unsat,
+Aqueous Pressure Zonation,5.2357E+04,Pa,h2,
+Aqueous Pressure,145681.1722,Pa,0.0,1/m,0.0,1/m,-9793.52,1/m,1,61,1,70,20,25, 
+
+~Boundary Conditions Card
+ 3,
+file, top_active_nodes.lst ,neumann,
+ 1,
+0,year,-1.70,mm/yr,
+west,hydraulic gradient,
+1,1,1,70,20,25,1,
+0.,yr,145681.1722,Pa,
+east,hydraulic gradient,
+61,61,1,70,20,25,1,
+0.,yr,145395.8400,Pa,
+
+~Output Control Card
+6,
+30,30,        23,
+30,30,        33,
+30,30,        43,
+30,30,        53,
+30,30,        63,
+30,30,        73,
+#
+1,1,yr,m,6,6,9,
+7,
+aqueous saturation,,
+matric potential,m,
+aqueous moisture content,,
+xnc aqueous vol,m/yr,
+znc aqueous vol,m/yr,
+aqueous pressure,pa,
+total water mass,,
+#
+4,
+100.,yr,
+500.,yr,
+1000.,yr,
+2000.,yr,
+8,
+aqueous saturation,,
+aqueous matric potential,cm,
+aqueous moisture content,,
+aqueous pressure,pa,
+xnc aqueous vol,m/yr,
+znc aqueous vol,m/yr,
+total water mass,,
+rock/soil type,,
