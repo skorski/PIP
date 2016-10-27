@@ -11,23 +11,56 @@ tests are in test_stomp.py
 
 import os
 import hashlib
+from stomp import *
+import re
+import operator
+import hashlib
 
 def clean_lines(filename):
+    #num_lines = 0
+    with open(filename) as f:    
+        for l in f:
+            line = l.strip()
+            if line:
+                if not line.startswith('#'):
+                    yield line
+                    #print(line)
+                    #num_lines += 1
+                    #print(line)
     """ 1. with reading from the file at filename
         2. yield every line except:
            - lines that start with a "#" character
-           - lines that are blank
+           - lines that are blank:while
            - lines that have empty space
     
     hint: you can do this in two lines.  Look at the itertools library
     """
-    raise NotImplementedError()
+    #raise NotImplementedError()
 
 def get_cards_from_file(filename):
     """yield Card objects for every card in the stomp file 
-
     """
-    raise NotImplementedError()
+    cards = {}
+    stop = '~'
+    with open(filename) as f:
+        li = f.readlines()
+        for l in li:
+            line = l.strip()
+            if line:
+                if not line.startswith('#'): #retrieving clean lines up to this point.
+                    if line.startswith('~'):
+                        #yield cards
+                        title = line[1:]
+                        start = title                                                                       
+                        content = ""
+                    if not line.startswith('~'):
+                        content += l[l.find(start)+1 : l.find(stop)]
+                        cards[title]=content                                                         
+    #yield cards               
+    print(cards)
+    print(len(cards))    
+        
+    #raise NotImplementedError()
 
 class Card:
     """ represents a Card in a STOMP input file """
@@ -36,6 +69,8 @@ class Card:
         self.options = options
 
     def add_option(self, raw_option):
+        get_cards_from_file('test_files/input')
+        print(cards[raw_option])
         """ add an option 
         
         raw_option is expected to be a string, read raw from the
