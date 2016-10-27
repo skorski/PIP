@@ -49,7 +49,7 @@ def get_cards_from_file(filename):
             if line:
                 if not line.startswith('#'): #retrieving clean lines up to this point.
                     if line.startswith('~'):
-                        #yield cards
+                        yield cards
                         title = line[1:]
                         start = title                                                                       
                         content = ""
@@ -57,8 +57,8 @@ def get_cards_from_file(filename):
                         content += l[l.find(start)+1 : l.find(stop)]
                         cards[title]=content                                                         
     #yield cards               
-    print(cards)
-    print(len(cards))    
+    #print(cards)
+    #print(len(cards))    
         
     #raise NotImplementedError()
 
@@ -69,8 +69,8 @@ class Card:
         self.options = options
 
     def add_option(self, raw_option):
-        get_cards_from_file('test_files/input')
-        print(cards[raw_option])
+        #get_cards_from_file('test_files/input')
+        #print(cards[raw_option])
         """ add an option 
         
         raw_option is expected to be a string, read raw from the
