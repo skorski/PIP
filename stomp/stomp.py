@@ -15,18 +15,16 @@ from stomp import *
 import re
 import operator
 import hashlib
+from itertools import dropwhile
+from itertools import filterfalse
 
-def clean_lines(filename):
-    #num_lines = 0
+
+def clean_lines(filename):  
     with open(filename) as f:    
-        for l in f:
-            line = l.strip()
-            if line:
-                if not line.startswith('#'):
-                    yield line
-                    #print(line)
-                    #num_lines += 1
-                    #print(line)
+        d = list(filterfalse(lambda l: l.strip() == "" or l.startswith('#'), f))            
+    return d
+    
+                    
     """ 1. with reading from the file at filename
         2. yield every line except:
            - lines that start with a "#" character
@@ -40,25 +38,22 @@ def clean_lines(filename):
 def get_cards_from_file(filename):
     """yield Card objects for every card in the stomp file 
     """
-    cards = {}
+    content = ""
     stop = '~'
-    with open(filename) as f:
-        li = f.readlines()
-        for l in li:
-            line = l.strip()
-            if line:
-                if not line.startswith('#'): #retrieving clean lines up to this point.
-                    if line.startswith('~'):
-                        yield cards
-                        title = line[1:]
-                        start = title                                                                       
-                        content = ""
-                    if not line.startswith('~'):
-                        content += l[l.find(start)+1 : l.find(stop)]
-                        cards[title]=content                                                         
-    #yield cards               
-    #print(cards)
-    #print(len(cards))    
+    fname = 'test_files\input'
+    for l in clean_lines(fname):
+        if l.startswith('~'):
+            title = l[1:]
+            start = title
+            card = Card(title, content)
+            yield card            
+        if not l.startswith('~'):
+            content = ""
+            content = content.join(l[l.find(start)+1 : l.find(stop)])
+    
+        cards = list(get_cards_from_file('test_files\input'))
+        
+        print(cards)
         
     #raise NotImplementedError()
 
@@ -69,8 +64,8 @@ class Card:
         self.options = options
 
     def add_option(self, raw_option):
-        #get_cards_from_file('test_files/input')
-        #print(cards[raw_option])
+       
+       
         """ add an option 
         
         raw_option is expected to be a string, read raw from the
