@@ -17,6 +17,7 @@ import operator
 import hashlib
 from itertools import dropwhile
 from itertools import filterfalse
+from itertools import takewhile
 
 
 def clean_lines(filename):  
@@ -35,35 +36,60 @@ def clean_lines(filename):
     """
     #raise NotImplementedError()
 
+class Option:
+    def __init__(self, name, values=[]):
+        self.name = name
+        self.values = values
+        
+    @classmethod 
+    def option_from_string(self, line):
+        list_nv = line.split(",")
+        name = list_nv[0]
+        values = list_nv[1: len(list_nv)+1]
+        
+        return Option(name, values)
+        
+    
+    def add_value(self, value):
+        """Placeholder for what will go here"""
+    
+        raise NotImplementedError()    
+        
 def get_cards_from_file(filename):
     """yield Card objects for every card in the stomp file 
     """
-    content = ""
-    stop = '~'
-    fname = 'test_files\input'
-    for l in clean_lines(fname):
-        if l.startswith('~'):
-            title = l[1:]
-            start = title
-            card = Card(title, content)
-            yield card            
-        if not l.startswith('~'):
-            content = ""
-            content = content.join(l[l.find(start)+1 : l.find(stop)])
+    options = []
+    name = ""
+    values = []
     
-        cards = list(get_cards_from_file('test_files\input'))
-        
-        print(cards)
+    for l in clean_lines(filename):
+        if l.startswith('~'):
+            if options != []:
+                card = Card(l, options)
+                yield card
+            title = l[1:]
+        else:
+            Option.option_from_string(l)
+            options.append(Option(name, values))
+    
+    yield card   
         
     #raise NotImplementedError()
-
+def see_card_objects(filename):
+    d = list(get_cards_from_file(filename))
+    return d
+    
 class Card:
     """ represents a Card in a STOMP input file """
-    def __init__(self, name, options=[]):
-        self.name = name
+    def __init__(self, title, options=[]):
+        self.title = title
         self.options = options
-
+        
+    @classmethod
     def add_option(self, raw_option):
+        
+         
+        
        
        
         """ add an option 
