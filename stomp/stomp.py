@@ -76,8 +76,8 @@ def get_cards_from_file(filename):
         
     #raise NotImplementedError()
 def see_card_objects(filename):
-    d = list(get_cards_from_file(filename))
-    return d
+    for card in get_cards_from_file(filename):
+        yield card
     
 class Card:
     """ represents a Card in a STOMP input file """
