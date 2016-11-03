@@ -42,10 +42,10 @@ class Option:
         self.values = values
         
     @classmethod 
-    def option_from_string(self, line):
+    def option_from_string(cls, line):
         list_nv = line.split(",")
         name = list_nv[0]
-        values = list_nv[1: len(list_nv)+1]
+        values = list_nv[1:-1]
         
         return Option(name, values)
     
