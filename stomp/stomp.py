@@ -88,9 +88,7 @@ class Card:
         self.options = options
         
     def __str__(self):
-        o = str(self.options)
-        #c = "\n".join([self.title]) ",".join([o]))
-        return self.title + o
+        return self.title
         
         
     @classmethod
@@ -98,14 +96,6 @@ class Card:
     
     
         raise NotImplementedError()
-        
-def see_card_objects(filename):
-    for card in get_cards_from_file(filename):
-        print(card) 
-
-def see_option_objects(filename):
-    for options in get_cards_from_file(filename):
-        print(options)
 
 
 def get_hash(filename, hashtype="sha512"):

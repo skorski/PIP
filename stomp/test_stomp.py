@@ -18,6 +18,15 @@ if not os.path.exists(STOMP_FILE):
         "- are you sure you are in the right directory?"])
     raise Exception(msg.format(STOMP_FILE))
 
+def see_card_objects(filename):
+    for card in get_cards_from_file(filename):
+        print(card)
+        
+@unittest.skip
+def see_option_objects(filename):
+    for options in get_cards_from_file(filename):
+        print(options)
+        
 @unittest.skip
 class TestExampleUnitTest(unittest.TestCase):
     def test_nothing(self):
@@ -30,7 +39,7 @@ class Dummy(unittest.TestCase):
         fname = "test_files/input"
         clean_lines(fname)
 
-#@unittest.skip
+@unittest.skip
 class TestCleanLines(unittest.TestCase):
     """ tests clean_lines """
     def test_no_pounds(self):
@@ -61,7 +70,7 @@ def get_number_of_cards():
                 pass
     return N_cards
 
-#@unittest.skip
+@unittest.skip
 class TestGetCardsFromFile(unittest.TestCase):
     """ test get_cards_from_file """
     def test_all_cards_read(self):
@@ -69,7 +78,7 @@ class TestGetCardsFromFile(unittest.TestCase):
         cards = [item for item in get_cards_from_file(STOMP_FILE)]
         self.assertEqual(len(cards), get_number_of_cards(), msg)
 
-#@unittest.skip
+@unittest.skip
 class TestInputFile(unittest.TestCase):
     """ test InputFile """
     def test_init(self):
