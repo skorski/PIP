@@ -48,7 +48,11 @@ class Option:
         values = list_nv[1: len(list_nv)+1]
         
         return Option(name, values)
+    
+    def __str__(self):
+        v = str(self.values)
         
+        return self.name
     
     def add_value(self, value):
         """Placeholder for what will go here"""
@@ -67,6 +71,7 @@ def get_cards_from_file(filename):
             if options != []:
                 card = Card(l, options)
                 yield card
+                
             title = l[1:]
         else:
             Option.option_from_string(l)
@@ -75,31 +80,32 @@ def get_cards_from_file(filename):
     yield card   
         
     #raise NotImplementedError()
-def see_card_objects(filename):
-    for card in get_cards_from_file(filename):
-        yield card
     
 class Card:
     """ represents a Card in a STOMP input file """
     def __init__(self, title, options=[]):
-        self.title = title
+        self.title = title[1:]
         self.options = options
+        
+    def __str__(self):
+        o = str(self.options)
+        #c = "\n".join([self.title]) ",".join([o]))
+        return self.title + o
+        
         
     @classmethod
     def add_option(self, raw_option):
-        
-         
-        
-       
-       
-        """ add an option 
-        
-        raw_option is expected to be a string, read raw from the
-        stomp input file.  The raw_option should be parsed
-        and added to self.options
-        
-        """
+    
+    
         raise NotImplementedError()
+        
+def see_card_objects(filename):
+    for card in get_cards_from_file(filename):
+        print(card) 
+
+def see_option_objects(filename):
+    for options in get_cards_from_file(filename):
+        print(options)
 
 
 def get_hash(filename, hashtype="sha512"):
