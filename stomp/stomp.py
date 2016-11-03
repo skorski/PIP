@@ -46,7 +46,7 @@ class Option:
         list_nv = line.split(",")
         name = list_nv[0]
         values = list_nv[1:-1]
-        
+         
         return Option(name, values)
     
     def __str__(self):
