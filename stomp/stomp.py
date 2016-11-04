@@ -50,8 +50,6 @@ class Option:
         return Option(name, values)
     
     def __str__(self):
-        v = str(self.values)
-        
         return self.name
     
     def add_value(self, value):
@@ -87,8 +85,13 @@ class Card:
         self.title = title[1:]
         self.options = options
         
-    def __str__(self):
-        return self.title
+        
+    def card_report(card):
+        cardReport =  "\n.join([self.title, self.options])"
+        return Card.cardReport
+        
+    #def __str__(self):
+    #   return self.cardReport
         
         
     @classmethod
