@@ -43,14 +43,21 @@ class Option:
         
     @classmethod 
     def option_from_string(cls, line):
+        list_nv = []
         list_nv = line.split(",")
+        #print(list_nv)
         name = list_nv[0]
-        values = list_nv[1:-1]
-         
+        print(name)
+        values = list_nv[1:] 
+        #print(values)
         return Option(name, values)
+
+        
+    def get_option(self):
+        return "\n".join([self.name, ", ".join(map(str, self.values))])
     
     def __str__(self):
-        return self.name
+            return Option.get_option(self) 
     
     def add_value(self, value):
         """Placeholder for what will go here"""
@@ -61,37 +68,40 @@ def get_cards_from_file(filename):
     """yield Card objects for every card in the stomp file 
     """
     options = []
-    name = ""
-    values = []
+    title = ""
     
     for l in clean_lines(filename):
         if l.startswith('~'):
             if options != []:
-                card = Card(l, options)
+                card = Card(title, options)
                 yield card
-                
-            title = l[1:]
+            title = l                
+            options = []
         else:
-            Option.option_from_string(l)
-            options.append(Option(name, values))
-    
-    yield card   
+            o = Option.option_from_string(l)
+            options.append(o)
+            
+                
+    yield card    
         
     #raise NotImplementedError()
-    
+
+        
 class Card:
     """ represents a Card in a STOMP input file """
     def __init__(self, title, options=[]):
         self.title = title[1:]
         self.options = options
+          
         
+    def card_report(self):
+        return  "\n".join([self.title, ", ".join(map(str, self.options))])
+    
+    def get_report(card):
+        return card.card_report()
         
-    def card_report(card):
-        cardReport =  "\n.join([self.title, self.options])"
-        return Card.cardReport
-        
-    #def __str__(self):
-    #   return self.cardReport
+    def __str__(self):
+      return self.title
         
         
     @classmethod

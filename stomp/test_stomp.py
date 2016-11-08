@@ -18,15 +18,16 @@ if not os.path.exists(STOMP_FILE):
         "- are you sure you are in the right directory?"])
     raise Exception(msg.format(STOMP_FILE))
 
-def get_card_report(filename):
-    s = map(lambda c: c.card_report(), get_cards_from_file(filename))
-    res = "\n***************\n".join([str(s)])
-    print(res)
-    
-@unittest.skip
-def see_option_objects(filename):
-    for options in get_cards_from_file(filename):
-        print(options)
+#@unittest.skip    
+class TestCardReport(unittest.TestCase):
+
+    def test_get_card_report(self):
+        gcf = get_cards_from_file(STOMP_FILE)
+        #for card in gcf:
+        #   print(card.card_report())
+        s = map(lambda c: c.card_report(), get_cards_from_file(STOMP_FILE))
+        res = "\n***************\n".join(s)
+        print(res)
         
 @unittest.skip
 class TestExampleUnitTest(unittest.TestCase):
