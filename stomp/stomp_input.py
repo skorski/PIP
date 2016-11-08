@@ -1,5 +1,5 @@
 """
-stomp.py
+stomp_input.py
 -----------
 Utilities for working with stomp files
 
@@ -11,7 +11,7 @@ tests are in test_stomp.py
 
 import os
 import hashlib
-from stomp import *
+from stomp_input import *
 import re
 import operator
 import hashlib

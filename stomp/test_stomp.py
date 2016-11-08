@@ -1,4 +1,4 @@
-""" Unit tests for stomp.py 
+""" Unit tests for stomp_input.py 
 
 
 this assumes you execute this program in the local directory 
@@ -9,7 +9,7 @@ a valid STOMP file (must be called "input")
 """
 import os
 import unittest
-from stomp import *
+from stomp_input import *
 
 STOMP_FILE = os.path.join("test_files", "input")
 if not os.path.exists(STOMP_FILE):
