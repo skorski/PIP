@@ -1,0 +1,797 @@
+~Simulation Title Card                                                                                                              
+1,
+IDF PA transient model SZ test case HEPA SSW I-129 Release in 5 Random Cells,
+Arun Wahi,
+INTERA Inc.,
+July 17 2016,
+11:30 AM PDT,
+6,
+TVD Solver
+shortened simulation with simplified HEPA SSW I-129 release direct injection to SZ
+I-129 release from HEPA SSW in 5 random cells based on 3e-5 fractional release with uniform recharge at 3.5 mm/y
+case gwp06 has Kh(H3) 17,000 md, Kh(Re) 5 m/d, gradient 2e-5, alphaL 10.5 m, alphaT 0.105 m, n(H3) 0.2, n(Re) 0.0905
+generalized recharge, SZ boundary conditions applied with pressures prescribed E and W and each node N and S
+SZ_only model configuration using upper 9 m of saturated zone with water table 119.5 m NAVD88
+
+
+~Solution Control Card
+Restart,
+Water w/ Transport TVD Courant,1.0,
+1,
+2006.0, yr, 2251.0, yr, 1.0E-09, yr, 1.0E+00, yr, 1.25, 8, 1.0E-06,
+100000,
+1,
+Aqueous Relative Permeability, Upwind,
+
+
+~Grid Card
+Cartesian,
+# number of cells in x-, y-, and z-dimensions (i,j,k indices)
+# several layers from top and bottom will be inactive
+60,70,86,
+# spacing in x-dimension for i-indices proceeding east from origin easting in meters Washington State Plane South NAD83 HARN
+# Origin "lower left" is 573612.194 m, 134305.39 m, 56.5 m
+0.0,m,1@188.33,m,1@125.56,m,1@83.71,m,1@55.81,m,1@37.21,m,1@24.81,m,3@22.50,m,1@15,m,40@10,m,1@15,m,2@22.5,m,1@23.749,m,1@24.81,m,1@37.21,m,1@55.81,m,1@83.71,m,1@125.56,m,1@188.33,m,
+# spacing in y-dimension for j-indices proceeding north from origin northing in meters Washington State Plane South NAD83 HARN
+0.0,m,1@188.33,m,1@125.56,m,1@83.71,m,1@55.81,m,1@37.21,m,1@24.81,m,1@18.845,m,2@22.50,m,1@15,m,50@10,m,1@15,m,2@22.50,m,1@18.845,m,1@24.81,m,1@37.21,m,1@55.81,m,1@83.71,m,1@125.56,m,1@188.33,m,
+# spacing in z-dimension for k-indices proceeding upward from origin elevation in meters on NAVD88
+56.5,m,11@4,m,6@2,m,6@1,m,4@0.5,m,4@1,m,1@1.5,m,39@2,m,15@1.667,m,
+
+
+~Inactive Nodes Card
+5,
+# Inactive below upper 9 m of saturated zone (below layer 17)
+1,60,1,70,1,16,
+# Inactive above water table (above layer 25)
+1,60,1,70,26,86,
+# Reduce domain by 2 rows on the west
+1,2,1,70,17,25,
+# Reduce domain by 2 rows on the south
+3,60,1,2,17,25,
+# Reduce domain by 1 row on the north
+3,60,70,70,17,25,
+
+
+~Rock/Soil Zonation Card
+zonation file unformatted,idf_pa_3d_geology_entire_model.zon,
+#
+#  Zones designated cell by cell in external file looping through i, then j, then k.
+#  List order below establishes zone numbering for external file:
+#
+#  Inactive nodes are 0 by default (see inactive nodes card);
+#  Zone 1 = Basalt; 
+#  Zone 2 = Ringold A gravel (ra); 
+#  Zone 3 = Ringold Lower Mud (rlm); 
+#  Zone 4 = Ringold E gravel (saturated) (re_sat); 
+#  Zone 5 = H3 Saturated; (h3_sat)
+#  Zone 6 = Ringold E gravel (unsaturated) (re_unsat); 
+#  Zone 7 = H3 Unsaturated (h3_unsat)
+#  Zone 8 = H2 sand (h2)
+#
+basalt,
+ra,
+rlm,
+re_sat,
+h3_sat,
+re_unsat,
+h3_unsat,
+h2,
+
+
+~Mechanical Properties Card
+# lower saturated zone material types are not used (inactive)
+basalt,    2.650,   g/cm^3,  0.050,    0.050,,,    millington and quirk,
+ra,        2.4189,  g/cm^3,  0.09050,  0.09050,,,  millington and quirk,
+rlm,       2.4189,  g/cm^3,  0.09050,  0.09050,,,  millington and quirk,
+# upper saturated zone material types (active)
+# using CPGWM 6.3.3 specific yield for porosities with bulk density of 2.2 g/cm3
+h3_sat,    2.750,   g/cm^3,  0.200,    0.200,,,    millington and quirk,
+re_sat,    2.4189,  g/cm^3,  0.09050,  0.09050,,,  millington and quirk,
+# Vadose zone material types (inactive)
+# using measured porosities and bulk densities for sand sequence and gravel sequence from MPR
+h3_unsat,  2.6634,  g/cm^3,  0.1740,   0.1740,,,   millington and quirk,
+re_unsat,  2.6634,  g/cm^3,  0.1740,   0.1740,,,   millington and quirk,
+h2,        2.7760,  g/cm^3,  0.3840,   0.3840,,,   millington and quirk,
+
+
+~Hydraulic Properties Card
+# lower saturated zone material types are not used (inactive)
+# Kh and Kv from CPGWM 6.3.3 for Ringold
+basalt,    1.0E-04,   hc m/d,   1.0E-04,   hc m/d,   1.0E-05,   hc m/d,
+ra,        4.80,      hc m/d,   4.80,      hc m/d,   0.480,     hc m/d,
+rlm,       8.0E-03,   hc m/d,   8.0E-03,   hc m/d,   8.0E-04,   hc m/d,
+# upper saturated zone material types (active)
+# using CPGWM 6.3.3 Kh and Kv
+h3_sat,    17000,     hc m/d,   17000,     hc m/d,   1200,      hc m/d,
+re_sat,    5.0,       hc m/d,   5.0,       hc m/d,   0.50,      hc m/d,
+# vadose zone material types (inactive) low anisotropy case (P=1 x & y, P=1/3 z)
+# using fit values for sand sequence and gravel sequence from MPR
+h3_unsat,  4.671E-2,  hc cm/s,  4.671E-2,  hc cm/s,  7.714E-3,  hc cm/s,
+re_unsat,  4.671E-2,  hc cm/s,  4.671E-2,  hc cm/s,  7.714E-3,  hc cm/s,
+h2,        6.196E-3,  hc cm/s,  6.196E-3,  hc cm/s,  6.157E-3,  hc cm/s,
+
+
+~Saturation Function Card
+# saturated zone curves not invoked since boundary conditions prescribe head
+# input same parameters as unsaturated gravels without adjusting residual saturation
+basalt,    Nonhysteretic van Genuchten,  0.088590,1/cm,  1.2710,  2.18390E-02,,
+ra,        Nonhysteretic van Genuchten,  0.088590,1/cm,  1.2710,  2.18390E-02,,
+rlm,       Nonhysteretic van Genuchten,  0.088590,1/cm,  1.2710,  2.18390E-02,,
+h3_sat,    Nonhysteretic van Genuchten,  0.088590,1/cm,  1.2710,  2.18390E-02,,
+re_sat,    Nonhysteretic van Genuchten,  0.088590,1/cm,  1.2710,  2.18390E-02,,
+# vadose zone material types (inactive) low anisotropy case (P=1 x & y, P=1/3 z)
+# using fit values for sand sequence and gravel sequence from MPR
+h3_unsat,  Nonhysteretic van Genuchten,  0.088590,1/cm,  1.2710,  2.18390E-02,,
+re_unsat,  Nonhysteretic van Genuchten,  0.088590,1/cm,  1.2710,  2.18390E-02,,
+h2,        Nonhysteretic van Genuchten,  0.064190,1/cm,  1.6980,  7.55210E-02,,
+
+
+~x-Aqueous Relative Permeability Card
+# saturated zone curves not invoked since boundary conditions prescribe head
+# input same parameters as unsaturated gravels
+basalt,    Modified Mualem,,  0.637,
+ra,        Modified Mualem,,  0.637,
+rlm,       Modified Mualem,,  0.637,
+h3_sat,    Modified Mualem,,  0.637,
+re_sat,    Modified Mualem,,  0.637,
+# vadose zone material types (inactive) low anisotropy case (P=1 x & y, P=1/3 z)
+# using fit values for sand sequence and gravel sequence from MPR
+h3_unsat,  Modified Mualem,,  0.637,
+re_unsat,  Modified Mualem,,  0.637,
+h2,        Modified Mualem,, -0.683,
+
+
+~y-Aqueous Relative Permeability Card
+# saturated zone curves not invoked since boundary conditions prescribe head
+# input same parameters as unsaturated gravels
+basalt,    Modified Mualem,,  0.637,
+ra,        Modified Mualem,,  0.637,
+rlm,       Modified Mualem,,  0.637,
+h3_sat,    Modified Mualem,,  0.637,
+re_sat,    Modified Mualem,,  0.637,
+# vadose zone material types (inactive) low anisotropy case (P=1 x & y, P=1/3 z)
+# using fit values for sand sequence and gravel sequence from MPR
+h3_unsat,  Modified Mualem,,  0.637,
+re_unsat,  Modified Mualem,,  0.637,
+h2,        Modified Mualem,, -0.683,
+
+
+~z-Aqueous Relative Permeability Card
+# saturated zone curves not invoked since boundary conditions prescribe head
+# input same parameters as unsaturated gravels
+basalt,    Modified Mualem,, -0.225,
+ra,        Modified Mualem,, -0.225,
+rlm,       Modified Mualem,, -0.225,
+h3_sat,    Modified Mualem,, -0.225,
+re_sat,    Modified Mualem,, -0.225,
+# vadose zone material types (inactive) low anisotropy case (P=1 x & y, P=1/3 z)
+# using fit values for sand sequence and gravel sequence from MPR
+h3_unsat,  Modified Mualem,, -0.225,
+re_unsat,  Modified Mualem,, -0.225,
+h2,        Modified Mualem,,  0.375,
+
+
+#~Initial Conditions Card
+# Restarted from historical run from these initial conditions for 2006 years
+#aqueous pressure,gas pressure,
+#2,
+#aqueous pressure,   180000,  Pa,        0.0,  1/m,  0.0,  1/m,  -9793.52,  1/m,  3,  60,  3,  69,  17,  25,
+#gas pressure,     101325.0,  Pa,        0.0,  1/m,  0.0,  1/m,       0.0,  1/m,  3,  60,  3,  69,  17,  25,
+
+
+~Solute/Fluid Interaction Card
+1,
+#Tc-99 , Conventional, 2.5e-5, cm^2/s,, 2.130E+05,yr,
+I-129  ,Conventional, 2.5e-5, cm^2/s,, 1.570E+07,yr,
+0,
+
+
+~Solute/Porous Media Interaction Card
+#
+# lower saturated zone material types are not used (inactive)
+#
+basalt,  10.50,  m,  0.105,  m,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+ra,      10.50,  m,  0.105,  m,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+rlm,     10.50,  m,  0.105,  m,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+#
+# upper saturated zone material types (active)
+# In gwp06 case SZ longitudinal dispersivity = 10.5 m, transverse dispersivity = 0.105 m.
+#
+re_sat,  10.50,  m,  0.1050,  m,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+h3_sat,  10.50,  m,  0.1050,  m,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+#
+# vadose zone material types are not used (inactive)
+# In vzp00 case VZ dispersivities are lower values for gravelly sequence and sandy sequence from MPR
+#
+re_unsat,  20.0, cm, 2.00, cm,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+h3_unsat,  20.0, cm, 2.00, cm,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+h2,        25.0, cm, 2.50, cm,
+#  Tc-99, 0.0, mL/g, 1.0,
+  I-129, 0.0, mL/g, 1.0,
+
+
+~Source Card
+# I-129 HEPA SSW 3e-5 fractional release with uniform recharge case.
+# Release footprint is 5 randomly ditributed cells.
+# For test case source directly injected to saturated zone at k = 25 with no vadose zone delay or dispersion.
+# Simulation time shortened for rapid steady state due to direct injection.
+5,
+Solute, I-129, 39, 39, 51, 51, 25, 25, 4,
+2006.0,yr, 0.0,Ci/yr,
+2151.0,yr, 0.0,Ci/yr,
+2151.0,yr, 5.6e-7,Ci/yr,
+2251.0,yr, 5.6e-7,Ci/yr,
+Solute, I-129, 43, 43, 47, 47, 25, 25, 4,
+2006.0,yr, 0.0,Ci/yr,
+2151.0,yr, 0.0,Ci/yr,
+2151.0,yr, 5.6e-7,Ci/yr,
+2251.0,yr, 5.6e-7,Ci/yr,
+Solute, I-129, 39, 39, 26, 26, 25, 25, 4,
+2006.0,yr, 0.0,Ci/yr,
+2151.0,yr, 0.0,Ci/yr,
+2151.0,yr, 5.6e-7,Ci/yr,
+2251.0,yr, 5.6e-7,Ci/yr,
+Solute, I-129, 23, 23, 37, 37, 25, 25, 4,
+2006.0,yr, 0.0,Ci/yr,
+2151.0,yr, 0.0,Ci/yr,
+2151.0,yr, 5.6e-7,Ci/yr,
+2251.0,yr, 5.6e-7,Ci/yr,
+Solute, I-129, 31, 31, 55, 55, 25, 25, 4,
+2006.0,yr, 0.0,Ci/yr,
+2151.0,yr, 0.0,Ci/yr,
+2151.0,yr, 5.6e-7,Ci/yr,
+2251.0,yr, 5.6e-7,Ci/yr,
+
+
+~Surface Flux Card
+#
+95,
+#
+# Surfaces for concentrations in 5-m interval below water table
+# East and north edges of 100-m buffer zone are at i = 55 and j = 65
+#
+#File east2.srf writes fluxes for middle third of eastern boundary cells (200.00 m total) at 100-m buffer zone.
+40,east2.srf,
+Solute Flux, I-129,Ci/yr,,east,55,55,26,26,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,26,26,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,27,27,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,27,27,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,28,28,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,28,28,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,29,29,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,29,29,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,30,30,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,30,30,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,31,31,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,31,31,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,32,32,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,32,32,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,33,33,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,33,33,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,34,34,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,34,34,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,35,35,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,35,35,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,36,36,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,36,36,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,37,37,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,37,37,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,38,38,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,38,38,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,39,39,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,39,39,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,40,40,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,40,40,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,41,41,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,41,41,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,42,42,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,42,42,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,43,43,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,43,43,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,44,44,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,44,44,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,45,45,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,45,45,20,25,
+#
+#File east3.srf writes fluxes for northern third of eastern boundary cells (253.655 m total) at 100-m buffer zone.
+40,east3.srf,
+Solute Flux, I-129,Ci/yr,,east,55,55,46,46,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,46,46,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,47,47,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,47,47,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,48,48,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,48,48,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,49,49,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,49,49,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,50,50,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,50,50,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,51,51,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,51,51,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,52,52,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,52,52,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,53,53,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,53,53,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,54,54,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,54,54,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,55,55,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,55,55,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,56,56,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,56,56,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,57,57,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,57,57,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,58,58,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,58,58,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,59,59,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,59,59,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,60,60,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,60,60,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,61,61,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,61,61,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,62,62,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,62,62,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,63,63,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,63,63,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,64,64,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,64,64,20,25,
+Solute Flux, I-129,Ci/yr,,east,55,55,65,65,20,25,
+Aqueous Volumetric,L/yr,L,east,55,55,65,65,20,25,
+#
+# Surfaces for checking solute and water mass balance
+#
+15,mass_balance.srf,
+Solute Flux, I-129, Ci/yr,, bottom,  3, 55,  3, 65,  25,  25,
+Solute Flux, I-129, Ci/yr,, bottom,  3, 55,  3, 65,  20,  20,
+Solute Flux, I-129, Ci/yr,, east,   55, 55,  3, 65,  25,  25,
+Solute Flux, I-129, Ci/yr,, east,   55, 55,  3, 65,  24,  24,
+Solute Flux, I-129, Ci/yr,, east,   55, 55,  3, 65,  20,  23,
+Solute Flux, I-129, Ci/yr,, east,   55, 55,  3, 65,  17,  19,
+Solute Flux, I-129, Ci/yr,, north,   3, 55, 65, 65,  25,  25,
+Solute Flux, I-129, Ci/yr,, north,   3, 55, 65, 65,  24,  24,
+Solute Flux, I-129, Ci/yr,, north,   3, 55, 65, 65,  20,  23,
+Solute Flux, I-129, Ci/yr,, north,   3, 55, 65, 65,  17,  19,
+Aqueous Volumetric Flux, L/yr, L, top,     3, 60,  3, 69, 25, 25,
+Aqueous Volumetric Flux, L/yr, L, west,    3,  3,  3, 69, 17, 25,
+Aqueous Volumetric Flux, L/yr, L, east,   60, 60,  3, 69, 17, 25,
+Aqueous Volumetric Flux, L/yr, L, north,   3, 60, 69, 69, 17, 25, 
+Aqueous Volumetric Flux, L/yr, L, south,   3, 60,  3,  3, 17, 25,
+
+
+~Output Control Card
+10,
+  39, 51, 25,
+  55, 61, 25,
+  55, 61, 24,
+  55, 61, 23,
+  55, 61, 22,
+  55, 61, 21,
+  55, 61, 20,
+  55, 61, 19,
+  55, 61, 18,
+  55, 61, 17,
+50,1,yr,m,6,6,6,
+1,
+#solute aqueous conc, Tc-99,Ci/L,
+solute aqueous conc, I-129,Ci/L,
+#xnc aqueous vol,m/yr,
+#ync aqueous vol,m/yr,
+#znc aqueous vol,mm/yr,
+#aqueous courant,,
+1,
+#  2006.0,yr,
+  2251.0,yr,
+#  2651.0,yr,
+#  3151.0,yr,
+#  4051.0,yr,
+#  6051.0,yr,
+#  8051.0,yr,
+#  10051.0,yr,
+#  12051.0,yr,
+6,
+#solute aqueous conc, Tc-99,Ci/L,
+solute aqueous conc, I-129,Ci/L,
+rock/soil type,,
+xnc aqueous vol,m/yr,
+ync aqueous vol,m/yr,
+znc aqueous vol,mm/yr,
+aqueous courant,,
+
+
+~Boundary Conditions Card
+119,
+#
+# Saturated zone BCs for upper 9 m below steady-state water table at 119.5 m NAVD88
+# w/ due east gradient of 2e-5 m/m
+# Pressure specified at elevation of centroid of k = 17, i.e. 111.5 m NAVD88
+#
+# Intermediate calculations retain more digits than significant
+#
+# dP/dz = dP/dh = -9793.52 1/m for a hydrostratic column per STOMP User's Guide.
+# dP/dy = 0
+# dP/dx = (dh/dx)*(dP/dh) = (2e-5 m/m)*(-9793.52 Pa/m)
+#
+# P(east) = 101325 Pa + [(111.5 m NAVD88 - 119.5 m NAVD88) * (-9793.52 Pa/m)]
+#         = 179673.160 Pa
+#
+# Length of domain in x from sum of spacings minus inactive nodes = 1597.109 m - 188.33 m - 125.56 m
+#                                                                 = 1283.219 m
+#
+# P(west) = P(east) - (dh/dx)*(dP/dh)*dx
+#         = (179673.160 Pa) - (2e-5 m/m)*(-9793.52 Pa/m)*(1283.219 m)
+#         = 179924.505 Pa
+#
+# Similarly to specify pressure at node center x position for i = 3,
+# dx(edge to node) = (83.71 m)/2 and P(node) = 179916.306 Pa
+# etc.
+#
+west,seepage face,outflow,
+3,3,3,69,17,25,1,
+0,yr,179924.505,Pa,,,,,,,,,
+east,seepage face,outflow,
+60,60,3,69,17,25,1,
+0,yr,179673.16,Pa,,,,,,,,,
+south,seepage face,outflow,
+3,3,3,3,17,25,1,
+0,yr,179916.306,Pa,,,,,,,,,
+south,seepage face,outflow,
+4,4,3,3,17,25,1,
+0,yr,179902.643,Pa,,,,,,,,,
+south,seepage face,outflow,
+5,5,3,3,17,25,1,
+0,yr,179893.533,Pa,,,,,,,,,
+south,seepage face,outflow,
+6,6,3,3,17,25,1,
+0,yr,179887.459,Pa,,,,,,,,,
+south,seepage face,outflow,
+7,7,3,3,17,25,1,
+0,yr,179882.825,Pa,,,,,,,,,
+south,seepage face,outflow,
+8,8,3,3,17,25,1,
+0,yr,179878.418,Pa,,,,,,,,,
+south,seepage face,outflow,
+9,9,3,3,17,25,1,
+0,yr,179874.011,Pa,,,,,,,,,
+south,seepage face,outflow,
+10,10,3,3,17,25,1,
+0,yr,179870.339,Pa,,,,,,,,,
+south,seepage face,outflow,
+11,11,3,3,17,25,1,
+0,yr,179867.89,Pa,,,,,,,,,
+south,seepage face,outflow,
+12,12,3,3,17,25,1,
+0,yr,179865.932,Pa,,,,,,,,,
+south,seepage face,outflow,
+13,13,3,3,17,25,1,
+0,yr,179863.973,Pa,,,,,,,,,
+south,seepage face,outflow,
+14,14,3,3,17,25,1,
+0,yr,179862.014,Pa,,,,,,,,,
+south,seepage face,outflow,
+15,15,3,3,17,25,1,
+0,yr,179860.055,Pa,,,,,,,,,
+south,seepage face,outflow,
+16,16,3,3,17,25,1,
+0,yr,179858.097,Pa,,,,,,,,,
+south,seepage face,outflow,
+17,17,3,3,17,25,1,
+0,yr,179856.138,Pa,,,,,,,,,
+south,seepage face,outflow,
+18,18,3,3,17,25,1,
+0,yr,179854.179,Pa,,,,,,,,,
+south,seepage face,outflow,
+19,19,3,3,17,25,1,
+0,yr,179852.221,Pa,,,,,,,,,
+south,seepage face,outflow,
+20,20,3,3,17,25,1,
+0,yr,179850.262,Pa,,,,,,,,,
+south,seepage face,outflow,
+21,21,3,3,17,25,1,
+0,yr,179848.303,Pa,,,,,,,,,
+south,seepage face,outflow,
+22,22,3,3,17,25,1,
+0,yr,179846.344,Pa,,,,,,,,,
+south,seepage face,outflow,
+23,23,3,3,17,25,1,
+0,yr,179844.386,Pa,,,,,,,,,
+south,seepage face,outflow,
+24,24,3,3,17,25,1,
+0,yr,179842.427,Pa,,,,,,,,,
+south,seepage face,outflow,
+25,25,3,3,17,25,1,
+0,yr,179840.468,Pa,,,,,,,,,
+south,seepage face,outflow,
+26,26,3,3,17,25,1,
+0,yr,179838.51,Pa,,,,,,,,,
+south,seepage face,outflow,
+27,27,3,3,17,25,1,
+0,yr,179836.551,Pa,,,,,,,,,
+south,seepage face,outflow,
+28,28,3,3,17,25,1,
+0,yr,179834.592,Pa,,,,,,,,,
+south,seepage face,outflow,
+29,29,3,3,17,25,1,
+0,yr,179832.634,Pa,,,,,,,,,
+south,seepage face,outflow,
+30,30,3,3,17,25,1,
+0,yr,179830.675,Pa,,,,,,,,,
+south,seepage face,outflow,
+31,31,3,3,17,25,1,
+0,yr,179828.716,Pa,,,,,,,,,
+south,seepage face,outflow,
+32,32,3,3,17,25,1,
+0,yr,179826.757,Pa,,,,,,,,,
+south,seepage face,outflow,
+33,33,3,3,17,25,1,
+0,yr,179824.799,Pa,,,,,,,,,
+south,seepage face,outflow,
+34,34,3,3,17,25,1,
+0,yr,179822.84,Pa,,,,,,,,,
+south,seepage face,outflow,
+35,35,3,3,17,25,1,
+0,yr,179820.881,Pa,,,,,,,,,
+south,seepage face,outflow,
+36,36,3,3,17,25,1,
+0,yr,179818.923,Pa,,,,,,,,,
+south,seepage face,outflow,
+37,37,3,3,17,25,1,
+0,yr,179816.964,Pa,,,,,,,,,
+south,seepage face,outflow,
+38,38,3,3,17,25,1,
+0,yr,179815.005,Pa,,,,,,,,,
+south,seepage face,outflow,
+39,39,3,3,17,25,1,
+0,yr,179813.047,Pa,,,,,,,,,
+south,seepage face,outflow,
+40,40,3,3,17,25,1,
+0,yr,179811.088,Pa,,,,,,,,,
+south,seepage face,outflow,
+41,41,3,3,17,25,1,
+0,yr,179809.129,Pa,,,,,,,,,
+south,seepage face,outflow,
+42,42,3,3,17,25,1,
+0,yr,179807.17,Pa,,,,,,,,,
+south,seepage face,outflow,
+43,43,3,3,17,25,1,
+0,yr,179805.212,Pa,,,,,,,,,
+south,seepage face,outflow,
+44,44,3,3,17,25,1,
+0,yr,179803.253,Pa,,,,,,,,,
+south,seepage face,outflow,
+45,45,3,3,17,25,1,
+0,yr,179801.294,Pa,,,,,,,,,
+south,seepage face,outflow,
+46,46,3,3,17,25,1,
+0,yr,179799.336,Pa,,,,,,,,,
+south,seepage face,outflow,
+47,47,3,3,17,25,1,
+0,yr,179797.377,Pa,,,,,,,,,
+south,seepage face,outflow,
+48,48,3,3,17,25,1,
+0,yr,179795.418,Pa,,,,,,,,,
+south,seepage face,outflow,
+49,49,3,3,17,25,1,
+0,yr,179793.459,Pa,,,,,,,,,
+south,seepage face,outflow,
+50,50,3,3,17,25,1,
+0,yr,179791.501,Pa,,,,,,,,,
+south,seepage face,outflow,
+51,51,3,3,17,25,1,
+0,yr,179789.052,Pa,,,,,,,,,
+south,seepage face,outflow,
+52,52,3,3,17,25,1,
+0,yr,179785.38,Pa,,,,,,,,,
+south,seepage face,outflow,
+53,53,3,3,17,25,1,
+0,yr,179780.973,Pa,,,,,,,,,
+south,seepage face,outflow,
+54,54,3,3,17,25,1,
+0,yr,179776.443,Pa,,,,,,,,,
+south,seepage face,outflow,
+55,55,3,3,17,25,1,
+0,yr,179771.688,Pa,,,,,,,,,
+south,seepage face,outflow,
+56,56,3,3,17,25,1,
+0,yr,179765.614,Pa,,,,,,,,,
+south,seepage face,outflow,
+57,57,3,3,17,25,1,
+0,yr,179756.504,Pa,,,,,,,,,
+south,seepage face,outflow,
+58,58,3,3,17,25,1,
+0,yr,179742.84,Pa,,,,,,,,,
+south,seepage face,outflow,
+59,59,3,3,17,25,1,
+0,yr,179722.345,Pa,,,,,,,,,
+south,seepage face,outflow,
+60,60,3,3,17,25,1,
+0,yr,179691.604,Pa,,,,,,,,,
+north,seepage face,outflow,
+3,3,69,69,17,25,1,
+0,yr,179916.306,Pa,,,,,,,,,
+north,seepage face,outflow,
+4,4,69,69,17,25,1,
+0,yr,179902.643,Pa,,,,,,,,,
+north,seepage face,outflow,
+5,5,69,69,17,25,1,
+0,yr,179893.533,Pa,,,,,,,,,
+north,seepage face,outflow,
+6,6,69,69,17,25,1,
+0,yr,179887.459,Pa,,,,,,,,,
+north,seepage face,outflow,
+7,7,69,69,17,25,1,
+0,yr,179882.825,Pa,,,,,,,,,
+north,seepage face,outflow,
+8,8,69,69,17,25,1,
+0,yr,179878.418,Pa,,,,,,,,,
+north,seepage face,outflow,
+9,9,69,69,17,25,1,
+0,yr,179874.011,Pa,,,,,,,,,
+north,seepage face,outflow,
+10,10,69,69,17,25,1,
+0,yr,179870.339,Pa,,,,,,,,,
+north,seepage face,outflow,
+11,11,69,69,17,25,1,
+0,yr,179867.89,Pa,,,,,,,,,
+north,seepage face,outflow,
+12,12,69,69,17,25,1,
+0,yr,179865.932,Pa,,,,,,,,,
+north,seepage face,outflow,
+13,13,69,69,17,25,1,
+0,yr,179863.973,Pa,,,,,,,,,
+north,seepage face,outflow,
+14,14,69,69,17,25,1,
+0,yr,179862.014,Pa,,,,,,,,,
+north,seepage face,outflow,
+15,15,69,69,17,25,1,
+0,yr,179860.055,Pa,,,,,,,,,
+north,seepage face,outflow,
+16,16,69,69,17,25,1,
+0,yr,179858.097,Pa,,,,,,,,,
+north,seepage face,outflow,
+17,17,69,69,17,25,1,
+0,yr,179856.138,Pa,,,,,,,,,
+north,seepage face,outflow,
+18,18,69,69,17,25,1,
+0,yr,179854.179,Pa,,,,,,,,,
+north,seepage face,outflow,
+19,19,69,69,17,25,1,
+0,yr,179852.221,Pa,,,,,,,,,
+north,seepage face,outflow,
+20,20,69,69,17,25,1,
+0,yr,179850.262,Pa,,,,,,,,,
+north,seepage face,outflow,
+21,21,69,69,17,25,1,
+0,yr,179848.303,Pa,,,,,,,,,
+north,seepage face,outflow,
+22,22,69,69,17,25,1,
+0,yr,179846.344,Pa,,,,,,,,,
+north,seepage face,outflow,
+23,23,69,69,17,25,1,
+0,yr,179844.386,Pa,,,,,,,,,
+north,seepage face,outflow,
+24,24,69,69,17,25,1,
+0,yr,179842.427,Pa,,,,,,,,,
+north,seepage face,outflow,
+25,25,69,69,17,25,1,
+0,yr,179840.468,Pa,,,,,,,,,
+north,seepage face,outflow,
+26,26,69,69,17,25,1,
+0,yr,179838.51,Pa,,,,,,,,,
+north,seepage face,outflow,
+27,27,69,69,17,25,1,
+0,yr,179836.551,Pa,,,,,,,,,
+north,seepage face,outflow,
+28,28,69,69,17,25,1,
+0,yr,179834.592,Pa,,,,,,,,,
+north,seepage face,outflow,
+29,29,69,69,17,25,1,
+0,yr,179832.634,Pa,,,,,,,,,
+north,seepage face,outflow,
+30,30,69,69,17,25,1,
+0,yr,179830.675,Pa,,,,,,,,,
+north,seepage face,outflow,
+31,31,69,69,17,25,1,
+0,yr,179828.716,Pa,,,,,,,,,
+north,seepage face,outflow,
+32,32,69,69,17,25,1,
+0,yr,179826.757,Pa,,,,,,,,,
+north,seepage face,outflow,
+33,33,69,69,17,25,1,
+0,yr,179824.799,Pa,,,,,,,,,
+north,seepage face,outflow,
+34,34,69,69,17,25,1,
+0,yr,179822.84,Pa,,,,,,,,,
+north,seepage face,outflow,
+35,35,69,69,17,25,1,
+0,yr,179820.881,Pa,,,,,,,,,
+north,seepage face,outflow,
+36,36,69,69,17,25,1,
+0,yr,179818.923,Pa,,,,,,,,,
+north,seepage face,outflow,
+37,37,69,69,17,25,1,
+0,yr,179816.964,Pa,,,,,,,,,
+north,seepage face,outflow,
+38,38,69,69,17,25,1,
+0,yr,179815.005,Pa,,,,,,,,,
+north,seepage face,outflow,
+39,39,69,69,17,25,1,
+0,yr,179813.047,Pa,,,,,,,,,
+north,seepage face,outflow,
+40,40,69,69,17,25,1,
+0,yr,179811.088,Pa,,,,,,,,,
+north,seepage face,outflow,
+41,41,69,69,17,25,1,
+0,yr,179809.129,Pa,,,,,,,,,
+north,seepage face,outflow,
+42,42,69,69,17,25,1,
+0,yr,179807.17,Pa,,,,,,,,,
+north,seepage face,outflow,
+43,43,69,69,17,25,1,
+0,yr,179805.212,Pa,,,,,,,,,
+north,seepage face,outflow,
+44,44,69,69,17,25,1,
+0,yr,179803.253,Pa,,,,,,,,,
+north,seepage face,outflow,
+45,45,69,69,17,25,1,
+0,yr,179801.294,Pa,,,,,,,,,
+north,seepage face,outflow,
+46,46,69,69,17,25,1,
+0,yr,179799.336,Pa,,,,,,,,,
+north,seepage face,outflow,
+47,47,69,69,17,25,1,
+0,yr,179797.377,Pa,,,,,,,,,
+north,seepage face,outflow,
+48,48,69,69,17,25,1,
+0,yr,179795.418,Pa,,,,,,,,,
+north,seepage face,outflow,
+49,49,69,69,17,25,1,
+0,yr,179793.459,Pa,,,,,,,,,
+north,seepage face,outflow,
+50,50,69,69,17,25,1,
+0,yr,179791.501,Pa,,,,,,,,,
+north,seepage face,outflow,
+51,51,69,69,17,25,1,
+0,yr,179789.052,Pa,,,,,,,,,
+north,seepage face,outflow,
+52,52,69,69,17,25,1,
+0,yr,179785.38,Pa,,,,,,,,,
+north,seepage face,outflow,
+53,53,69,69,17,25,1,
+0,yr,179780.973,Pa,,,,,,,,,
+north,seepage face,outflow,
+54,54,69,69,17,25,1,
+0,yr,179776.443,Pa,,,,,,,,,
+north,seepage face,outflow,
+55,55,69,69,17,25,1,
+0,yr,179771.688,Pa,,,,,,,,,
+north,seepage face,outflow,
+56,56,69,69,17,25,1,
+0,yr,179765.614,Pa,,,,,,,,,
+north,seepage face,outflow,
+57,57,69,69,17,25,1,
+0,yr,179756.504,Pa,,,,,,,,,
+north,seepage face,outflow,
+58,58,69,69,17,25,1,
+0,yr,179742.84,Pa,,,,,,,,,
+north,seepage face,outflow,
+59,59,69,69,17,25,1,
+0,yr,179722.345,Pa,,,,,,,,,
+north,seepage face,outflow,
+60,60,69,69,17,25,1,
+0,yr,179691.604,Pa,,,,,,,,,
+#uniform steady state recharge for test case
+top,Neumann,zero flux,
+3,60,3,69,25,25,1,
+0.0,yr,-3.5,mm/yr,,,

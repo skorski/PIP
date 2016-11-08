@@ -1,0 +1,43 @@
+Simulation Title Card                                                                                                              
+
+1, IDF PA SS flow model, Nazmul Hasan, INTERA, Feb 19 2016, 12:07 AM PT,       1, Steady state flow model 
+
+Solution Control Card                                                                                                              
+
+Normal, Water,       1,  0.00000E+00, 10000, 1, Aqueous Relative Permeability
+Grid Card
+
+Cartesian, 61, 573683.53, 134375.84, 56.5
+Inactive Nodes Card
+
+zonation file unformatted
+Rock/Soil Zonation Card
+
+zonation file unformatted, re_sat, h3_sat, re_unsat, h3_unsat, h2
+Mechanical Properties Card  
+
+h3_sat, re_sat, h3_unsat, re_unsat, h2
+Hydraulic Properties Card   
+
+h3_sat, re_sat, h3_unsat, re_unsat, h2
+Saturation Function Card       
+
+h3_sat, re_sat, h3_unsat, re_unsat, h2
+x-Aqueous Relative Permeability Card
+
+h3_sat         , re_sat         , h3_unsat         , re_unsat         , h2           
+y-Aqueous Relative Permeability Card
+
+h3_sat         , re_sat         , h3_unsat         , re_unsat         , h2           
+z-Aqueous Relative Permeability Card
+
+h3_sat         , re_sat         , h3_unsat         , re_unsat         , h2           
+Initial Conditions Card                                                                                                            
+
+Gas Pressure, 5, Gas Pressure, Aqueous Pressure Zonation, Aqueous Pressure Zonation, Aqueous Pressure Zonation, Aqueous Pressure
+Boundary Conditions Card
+
+ 3, file,  1, 0, west, 1, 0., east, 61, 0.
+Boundary Conditions Card
+
+ 3, file,  1, 0, west, 1, 0., east, 61, 0.
