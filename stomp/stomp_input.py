@@ -75,15 +75,15 @@ def get_cards_from_file(filename):
         if l.startswith('~'):
             if options != []:
                 card = Card(title, options)
-                yield card
-            title = l                
-            options = []
+                yield card 
+                title = l                
+                options = []
         else:
             o = Option.option_from_string(l)
             options.append(o)
-            
                 
-    yield card    
+    card = Card(title, options)
+    yield card   
         
     #raise NotImplementedError()
 
