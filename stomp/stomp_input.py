@@ -68,21 +68,21 @@ class Option:
 def get_cards_from_file(filename):
     """yield Card objects for every card in the stomp file 
     """
-    options = []
+    contents = []
     title = ""
     
     for l in clean_lines(filename):
         if l.startswith('~'):
-            if options != []:
-                card = Card(title, options)
+            if contents != []:
+                card = Card(title, contents)
                 yield card 
                 title = l                
-                options = []
+                contents = []
         else:
             o = Option.option_from_string(l)
-            options.append(o)
+            contents.append(o)
                 
-    card = Card(title, options)
+    card = Card(title, contents)
     yield card   
         
     #raise NotImplementedError()
@@ -90,13 +90,14 @@ def get_cards_from_file(filename):
         
 class Card:
     """ represents a Card in a STOMP input file """
-    def __init__(self, title, options=[]):
+    def __init__(self, title, contents=[]):
         self.title = title[1:]
-        self.options = options
+        self.contents = contents          
+        self.options = []
           
         
     def card_report(self):
-        return  "\n".join([self.title, ", ".join(map(str, self.options))])
+        return  "\n".join([self.title, ", ".join(map(str, self.contents))])
     
     def get_report(card):
         return card.card_report()
