@@ -10,31 +10,37 @@ tests are in test_stomp.py
 """
 import os
 
-target = "output"
-folder = "working_data"
+filepaths = []
 
-def find_file(target, folder): #target will be filename, folder I am hoping can be working_data.
-    for f in os.listdir(folder):
-        path = os.path.join(folder, f)
-        if os.path.isdir(path):
-            result = find_file(target, path)
-            if result is not None:
-                return result
-            continue
-        if f == target:
-            return path
+def find_file(name, path): #name is filename, path is drive
+    result = []
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            result.append(os.path.join(root, name))
+    return result
 
-def find_stomp_runs():
+def find_stomp_runs_Z():
     
-    drives = ['Z:\\', 'X:\\']
+    stomp_runs_Z = []
+    
+    filepath = find_file('output', 'Z:\\')
+    stomp_runs_Z.append(filepath)
+    
+    return stomp_runs_Z
+    
+                
+def find_stomp_runs_X():
 
-    for drive in drives:
-        if os.path.isdir(drive):
-            filepath = find_file('output', drive)
-            return filepath
-            if filepath is not None:
-                break
-            
+    stomp_runs_X = []
+    
+    filepath = find_file('output', 'X:\\')
+    stomp_runs_X.append(filepath)
+    return stomp_runs_X
+    
+
+
+    
+    
         
 if __name__=="__main__":
     pass
