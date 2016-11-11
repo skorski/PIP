@@ -9,6 +9,8 @@ written for python 3.4 and up
 tests are in test_stomp.py
 """
 import os
+import xlwt
+import csv
 
 filepaths = []
 
@@ -37,8 +39,19 @@ def find_stomp_runs_X():
     stomp_runs_X.append(filepath)
     return stomp_runs_X
     
+def excel_export():
+    olive_excel = find_stomp_runs_Z()
+    #oe = ", ".join(map(str, olive_excel))
+    result = open("olive_stomp.csv", 'w')
+    writer = csv.writer(result)
+    writer.writerows(olive_excel)
+    result.close()
+    
+    
 
 
+            
+                
     
     
         
